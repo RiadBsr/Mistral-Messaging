@@ -31,22 +31,22 @@ export async function POST(req: Request) {
     }
 
     // check if user is already added
-    const isAlreadyAdded = (await fetchRedis(
+    const isAlreadyAdded = await fetchRedis(
       "sismember",
       `user:${idToAdd}:incoming_friend_requests`,
       session.user.id
-    )) as 0 | 1;
+    );
 
     if (isAlreadyAdded) {
       return new Response("Already added this user", { status: 400 });
     }
 
     // check if user is already friend
-    const isAlreadyFriend = (await fetchRedis(
+    const isAlreadyFriend = await fetchRedis(
       "sismember",
       `user:${session.user.id}:friends`,
       session.user.id
-    )) as 0 | 1;
+    );
 
     if (isAlreadyFriend) {
       return new Response("Already friend with this user", { status: 400 });
