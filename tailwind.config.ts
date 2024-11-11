@@ -13,6 +13,13 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
     },
+    container: {
+      center: true,
+      padding: "1.5rem",
+      screens: {
+        "2x1": "1360px",
+      },
+    },
   },
   plugins: [require("@tailwindcss/forms")],
 };

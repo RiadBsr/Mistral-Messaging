@@ -49,6 +49,7 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
       <div className="flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
         <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
           <Icons.Logo className="h-12 w-auto text-orange-600" />
+          <span>Mistral Msg_</span>
         </Link>
         {friends.length > 0 ? (
           <div className="text-xs font-semibold leading-6 text-gray-400">
@@ -93,8 +94,8 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
             </li>
 
             <li className="-mx-6 mt-auto flex items-center">
-              <div className="flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
-                <div className="relative h-8 w-8 bg-gray-50">
+              <div className="flex min-w-0 flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
+                <div className="relative h-8 w-8 bg-gray-50 flex-shrink-0">
                   <Image
                     fill
                     referrerPolicy="no-referrer"
@@ -104,19 +105,25 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
                   />
                 </div>
                 <span className="sr-only">Your profile</span>
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-0">
                   <span aria-hidden>{session.user.name}</span>
-                  <span className="text-xs text-zinc-400" aria-hidden>
+                  <span
+                    className="text-xs text-zinc-400 truncate"
+                    aria-hidden
+                    title={session.user.email}
+                  >
                     {session.user.email}
                   </span>
                 </div>
               </div>
-              <SignOutButton className="h-full aspect-square" />
+              <SignOutButton className="h-full aspect-square flex-shrink-0" />
             </li>
           </ul>
         </nav>
       </div>
-      {children}
+      <aside className="max-h-screen container py-16 md:py-12 w-full">
+        {children}
+      </aside>
     </div>
   );
 };
