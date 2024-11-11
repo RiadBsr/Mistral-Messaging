@@ -29,6 +29,7 @@
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-hook-form": "^7.53.2",
     "react-hot-toast": "^2.4.1",
+    "react-loading-skeleton": "^3.5.0",
     "react-textarea-autosize": "^8.5.4",
     "tailwind-merge": "^2.5.4",
     "zod": "^3.23.8"

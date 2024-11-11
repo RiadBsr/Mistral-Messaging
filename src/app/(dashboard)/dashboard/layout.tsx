@@ -25,7 +25,7 @@ interface SidebarOpetion {
 const sidebarOptions: SidebarOpetion[] = [
   {
     id: 1,
-    name: "Add friend",
+    name: "Add friends",
     href: "/dashboard/add",
     Icon: "UserPlus",
   },
