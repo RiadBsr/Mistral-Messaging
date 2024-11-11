@@ -1,10 +1,12 @@
 import FriendRequestSidebarOptions from "@/components/FriendRequestSidebarOptions";
 import { Icon, Icons } from "@/components/Icons";
+import MobileChatLayout from "@/components/MobileChatLayout";
 import SidebarChatList from "@/components/SidebarChatList";
 import SignOutButton from "@/components/SignOutButton";
 import { getFriendsByUserId } from "@/helpers/get-friends-by-user-id";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
+import { SidebarOption } from "@/types/typings";
 import { getServerSession, User } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,14 +17,7 @@ interface layoutProps {
   children: ReactNode;
 }
 
-interface SidebarOpetion {
-  id: number;
-  name: string;
-  href: string;
-  Icon: Icon;
-}
-
-const sidebarOptions: SidebarOpetion[] = [
+const sidebarOptions: SidebarOption[] = [
   {
     id: 1,
     name: "Add friends",
@@ -46,10 +41,22 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
 
   return (
     <div className="w-full flex h-screen">
-      <div className="flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
-        <Link href="/dashboard" className="flex h-16 shrink-0 items-center">
-          <Icons.Logo className="h-12 w-auto text-orange-600" />
-          <span>Mistral Msg_</span>
+      <div className="md:hidden">
+        <MobileChatLayout
+          friends={friends}
+          session={session}
+          sidebarOptions={sidebarOptions}
+          unseenRequestCount={unseenRequestCount}
+        />
+      </div>
+      <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+        <Link href="/dashboard" className="flex h-25 shrink-0 items-center">
+          <Icons.Logo className="h-24 w-24 pt-4 text-orange-600" />
+          <span className="font-bold text-2xl font-mono select-none leading-tight">
+            Mistral
+            <br />
+            Msg_
+          </span>
         </Link>
         {friends.length > 0 ? (
           <div className="text-xs font-semibold leading-6 text-gray-400">
