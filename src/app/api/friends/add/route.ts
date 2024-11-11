@@ -30,6 +30,19 @@ export async function POST(req: Request) {
       });
     }
 
+    // check if they have already sent us a friend request
+    const hasIncomingFriendRequestFromThem = await fetchRedis(
+      "sismember",
+      `user:${session.user.id}:incoming_friend_requests`,
+      idToAdd
+    );
+
+    if (hasIncomingFriendRequestFromThem) {
+      return new Response("This user has already sent you a friend request", {
+        status: 400,
+      });
+    }
+
     // check if user is already added
     const isAlreadyAdded = await fetchRedis(
       "sismember",
@@ -45,11 +58,11 @@ export async function POST(req: Request) {
     const isAlreadyFriend = await fetchRedis(
       "sismember",
       `user:${session.user.id}:friends`,
-      session.user.id
+      idToAdd
     );
 
     if (isAlreadyFriend) {
-      return new Response("Already friend with this user", { status: 400 });
+      return new Response("Already friends with this user", { status: 400 });
     }
 
     // valid request
