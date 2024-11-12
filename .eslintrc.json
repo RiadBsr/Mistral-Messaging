@@ -6,6 +6,12 @@
       "rules": {
         "@typescript-eslint/no-unused-vars": "off"
       }
+    },
+    {
+      "files": ["src/components/ChatInput.tsx"],
+      "rules": {
+        "react-hooks/exhaustive-deps": "off"
+      }
     }
   ]
 }

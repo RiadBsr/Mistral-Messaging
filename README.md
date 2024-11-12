@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mistral Messaging App
+
+This is a real-time messaging application built with Next.js and powered by Mistral AI. The app allows users to send and receive messages instantly along with seamless AI integration.
+
+## Features
+
+- Real-time messaging
+- Google authentication
+- AI-powered message suggestions
+- Responsive design
+- Easy to deploy
+
+## Technologies Used
+
+- Next.js
+- Mistral AI
+- Pusher
+- Next Auth
+- Redis
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/mistral-messaging-app.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd mistral-messaging-app
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Fill API Keys:
+   ```bash
+   NEXTAUTH_SECRET
+   UPSTASH_REDIS_REST_URL
+   UPSTASH_REDIS_REST_TOKEN
+   GOOGLE_CLIENT_ID
+   GOOGLE_CLIENT_SECRET
+   PUSHER_APP_ID
+   NEXT_PUBLIC_PUSHER_APP_KEY
+   PUSHER_APP_SECRET
+   MISTRAL_API_KEY
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Running the App
 
-## Learn More
+1. Start the MongoDB server:
+   ```bash
+   mongod
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+3. Open your browser and navigate to `http://localhost:3000`
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Sign in with Google.
+2. Start a new conversation.
+3. Send and receive messages in real-time.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contributing
 
-## Deploy on Vercel
+Contributions are welcome! Please open an issue or submit a pull request for any changes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
+
+## Contact
+
+For any questions or inquiries, please contact [yourname@example.com](mailto:yourname@example.com).
+
+## Acknowledgements
+
+Special thanks to the contributors and the open-source community for their invaluable support and resources.
+
+## References
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Mistral AI Documentation](https://mistral.ai/docs)
+- [Pusher Documentation](https://pusher.com/docs)
+- [Upstash Redis Documentation](https://upstash.com/docs/redis)
+- [Google Authentication Documentation](https://developers.google.com/identity/sign-in/web/sign-in)
+
+## Future Enhancements
+
+- Implementing video and voice messaging
+- Adding support for group chats
+- Enhancing AI capabilities for better message suggestions
+- Integrating with other third-party services
+
+## Support
+
+If you encounter any issues or have any questions, please open an issue on the GitHub repository or contact [riad.boussoura@gmail.com](mailto:riad.boussoura@gmail.com).

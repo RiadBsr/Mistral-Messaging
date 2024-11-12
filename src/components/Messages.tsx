@@ -88,7 +88,7 @@ const Messages: FC<MessagesProps> = ({
                   {message.text}{" "}
                   <span
                     className={cn("ml-2 text-xs", {
-                      "text-gray-300": isCurrentUser,
+                      "text-gray-200": isCurrentUser,
                       "text-gray-400": !isCurrentUser,
                     })}
                   >

@@ -1,5 +1,5 @@
 import FriendRequestSidebarOptions from "@/components/FriendRequestSidebarOptions";
-import { Icon, Icons } from "@/components/Icons";
+import { Icons } from "@/components/Icons";
 import MobileChatLayout from "@/components/MobileChatLayout";
 import SidebarChatList from "@/components/SidebarChatList";
 import SignOutButton from "@/components/SignOutButton";
@@ -128,7 +128,7 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
           </ul>
         </nav>
       </div>
-      <aside className="max-h-screen container py-16 md:py-12 w-full">
+      <aside className="max-h-screen container pt-16 pb-8 md:pt-12 pb-6 w-full">
         {children}
       </aside>
     </div>

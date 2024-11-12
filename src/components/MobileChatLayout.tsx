@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
-  DialogTitle,
   TransitionChild,
 } from "@headlessui/react";
 import Link from "next/link";

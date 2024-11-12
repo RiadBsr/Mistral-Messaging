@@ -22,14 +22,23 @@ const Page: FC = () => {
   }
   return (
     <>
-      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex min-h-full items-center justify-center pt-20 sm:pt-40 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full flex flex-col items-center max-w-md space-y-8">
-          <div className="flex flex-col items-center gap-8">
-            <Icons.Logo width={200} height={200} />
-            <h2 className="mt-6 text-center text-3x1 font-bold tracking-tight text-gray-900">
-              Sign in
-            </h2>
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+            <Icons.Logo
+              width={150}
+              height={150}
+              className="w-24 h-24 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+            />
+            <span className="font-bold text-4xl sm:text-5xl lg:text-6xl font-mono select-none leading-tight flex items-center text-center sm:text-left">
+              Mistral
+              <br />
+              Msg_
+            </span>
           </div>
+          <h2 className="mt-6 text-center text-2xl sm:text-3xl font-mono font-bold tracking-tight text-gray-900">
+            Sign in
+          </h2>
           <Button
             isLoading={isLoading}
             type="button"
