@@ -1,5 +1,7 @@
 # Mistral Messaging App
 
+You can test the deployed project at [Mistral Msg\_](https://mistral-msg.vercel.app)
+
 This is a real-time messaging application built with Next.js and powered by Mistral AI. The app allows users to send and receive messages instantly along with seamless AI integration.
 
 ## Features
