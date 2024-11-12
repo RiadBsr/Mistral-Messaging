@@ -51,17 +51,21 @@ export async function POST(req: Request) {
     const message = messageValidator.parse(messageData);
 
     // notify users subscribed to the chatroom
-    pusherServer.trigger(
+    await pusherServer.trigger(
       toPusherKey(`chat:${chatId}`),
       "incoming_message",
       message
     );
 
-    pusherServer.trigger(toPusherKey(`user:${friendId}:chats`), "new_message", {
-      ...message,
-      senderImg: sender.image,
-      senderName: sender.name,
-    });
+    await pusherServer.trigger(
+      toPusherKey(`user:${friendId}:chats`),
+      "new_message",
+      {
+        ...message,
+        senderImg: sender.image,
+        senderName: sender.name,
+      }
+    );
 
     // sending the message
     await db.zadd(`chat:${chatId}:messages`, {
