@@ -82,6 +82,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
     try {
       await axios.post("/api/message/send", { text: input, chatId });
       setInput("");
+      setSuggestions([]);
       textareaRef.current?.focus();
     } catch {
       toast.error("Something went wrong. Please try again later.");
