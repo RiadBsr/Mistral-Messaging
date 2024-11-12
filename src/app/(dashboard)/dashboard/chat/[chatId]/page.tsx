@@ -8,12 +8,6 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-interface PageProps {
-  params: {
-    chatId: string;
-  };
-}
-
 async function getChatMessages(chatId: string) {
   try {
     const results: string[] = await fetchRedis(
@@ -35,8 +29,13 @@ async function getChatMessages(chatId: string) {
   }
 }
 
-const page = async ({ params }: PageProps) => {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ chatId: string }>;
+}) {
   const { chatId } = await params;
+
   const session = await getServerSession(authOptions);
   if (!session) notFound();
 
@@ -87,6 +86,4 @@ const page = async ({ params }: PageProps) => {
       <ChatInput chatId={chatId} chatPartner={chatPartner} />
     </div>
   );
-};
-
-export default page;
+}

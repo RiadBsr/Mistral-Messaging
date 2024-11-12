@@ -22,7 +22,7 @@ export default function Home() {
       if (index === fullText.length) {
         clearInterval(interval);
       }
-    }, 5);
+    }, 50);
     return () => clearInterval(interval);
   }, []);
 
