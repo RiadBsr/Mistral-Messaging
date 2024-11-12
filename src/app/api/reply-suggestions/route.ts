@@ -28,13 +28,19 @@ export async function POST(req: Request) {
     // Prepare the prompt
     const prompt = `You are an AI assistant that generates three natural reply suggestions based on the conversation history below. The suggestions should closely resemble the user's writing style, including punctuation, capitalization, and any unique stylistic choices. Pay attention to how the user structures sentences, uses abbreviations, emojis, or any other distinctive features.
 
+If there is no conversation history yet, suggest appropriate opening messages or natural greetings that usually people use when chating online.
+
 Conversation history:
-${messages
-  .map((m) => {
-    const role = m.senderId === session.user.id ? "User" : "Partner";
-    return `${role}: ${m.text}`;
-  })
-  .join("\n")}
+${
+  messages.length > 0
+    ? messages
+        .map((m) => {
+          const role = m.senderId === session.user.id ? "User" : "Partner";
+          return `${role}: ${m.text}`;
+        })
+        .join("\n")
+    : "No messages yet."
+}
 
 Based on the conversation, generate three reply suggestions for the user to reply with. The suggestions should be coherent with the current discussion and match the user's writing style. Output only the suggestions as a JSON array of strings without any additional text, code snippets, or code fences.
 `;
