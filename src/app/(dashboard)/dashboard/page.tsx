@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { format } from "date-fns";
 
 const page = async ({}) => {
   const session = await getServerSession(authOptions);
@@ -32,6 +33,11 @@ const page = async ({}) => {
     })
   );
 
+  // Sort the chats by last message timestamp in descending order
+  friendsWithLastMessage.sort(
+    (a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp
+  );
+
   return (
     <div className="container py-12">
       <h1 className="font-bold text-5xl mb-8">Recent chats</h1>
@@ -41,7 +47,7 @@ const page = async ({}) => {
         friendsWithLastMessage.map((friend) => (
           <div
             key={friend.id}
-            className="relative bg-zinc-50 border border-zinc-200 p-3 rounded-md"
+            className="relative bg-zinc-50 border border-zinc-200 p-3 m-3 rounded-md"
           >
             <div className="absolute right-4 inset-y-0 flex items-center">
               <ChevronRight className="h-7 w-7 text-zinc-400" />
@@ -75,6 +81,10 @@ const page = async ({}) => {
                       : ""}
                   </span>
                   {friend.lastMessage.text}
+                </p>
+                {/* Display when the last message was sent */}
+                <p className="text-sm text-zinc-500">
+                  {format(friend.lastMessage.timestamp, "MMM d, yyyy, h:mm a")}
                 </p>
               </div>
             </Link>
