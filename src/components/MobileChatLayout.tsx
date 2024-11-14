@@ -93,7 +93,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       {/* Your content */}
                       {friends.length > 0 ? (
-                        <div className="text-xs font-semibold leading-6 text-gray-400">
+                        <div className="text-xs font-semibold leading-6 text-gray-400 dark:text-gray-300">
                           Your chats
                         </div>
                       ) : null}
@@ -111,7 +111,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                           </li>
 
                           <li>
-                            <div className="text-xs font-semibold leading-6 text-gray-400">
+                            <div className="text-xs font-semibold leading-6 text-gray-400 dark:text-gray-300">
                               Overview
                             </div>
                             <ul role="list" className="-mx-2 mt-2 space-y-1">
@@ -121,7 +121,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                                   <li key={option.name}>
                                     <Link
                                       href={option.href}
-                                      className="text-gray-700 hover:text-orange-600 hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                      className="text-gray-700 dark:text-gray-300 hover:text-orange-600 hover:bg-gray-50 dark:hover:bg-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                     >
                                       <span className="text-gray-400 border-gray-200 group-hover:border-orange-600 group-hover:text-orange-600 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white">
                                         <Icon className="h-4 w-4" />

@@ -49,28 +49,23 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
           unseenRequestCount={unseenRequestCount}
         />
       </div>
-      <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+      <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 dark:border-gray-700 px-6">
         <Link href="/dashboard" className="flex h-25 shrink-0 items-center">
           <Icons.Logo className="h-24 w-24 pt-4 text-orange-600" />
-          <span className="font-bold text-2xl font-mono select-none leading-tight">
+          <span className="font-bold text-2xl font-mono select-none leading-tight text-gray-900 dark:text-gray-100">
             Mistral
             <br />
             Msg_
           </span>
         </Link>
-        {friends.length > 0 ? (
-          <div className="text-xs font-semibold leading-6 text-gray-400">
-            Your chats
-          </div>
-        ) : null}
 
         <nav className="flex flex-1 flex-col">
-          <ul role="list" className="flex flex-1 flex-col gap-y-7">
+          <ul role="list" className="flex flex-1 flex-col gap-y-7 ">
             <li>
               <SidebarChatList sessionId={session.user.id} friends={friends} />
             </li>
             <li>
-              <div className="text-xs font-semibold leading-6 text-gray-400">
+              <div className="text-xs font-semibold leading-6 text-gray-400 dark:text-gray-300">
                 Overview
               </div>
 
@@ -81,9 +76,9 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
                     <li key={option.id}>
                       <Link
                         href={option.href}
-                        className="text-gray-700 hover:text-orange-600 hover:bg-gray-50 group flex gap-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                        className="text-gray-700 dark:text-gray-300 hover:text-orange-600 hover:bg-gray-50 dark:hover:bg-gray-700 group flex gap-3 rounded-md p-2 text-sm leading-6 font-semibold"
                       >
-                        <span className="text-gray-400 border-gray-200 group-hover:border-orange-600 group-hover:text-orange-600 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white">
+                        <span className="text-gray-400 border-gray-200 group-hover:border-orange-600 group-hover:text-orange-600 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium">
                           <Icon className="h-4 w-4" />
                         </span>
                         <span className="truncate">{option.name}</span>
@@ -101,8 +96,8 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
             </li>
 
             <li className="-mx-6 mt-auto flex items-center">
-              <div className="flex min-w-0 flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
-                <div className="relative h-8 w-8 bg-gray-50 flex-shrink-0">
+              <div className="flex min-w-0 flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
+                <div className="relative h-8 w-8 flex-shrink-0">
                   <Image
                     fill
                     referrerPolicy="no-referrer"
@@ -128,7 +123,7 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
           </ul>
         </nav>
       </div>
-      <aside className="max-h-screen container pt-16 pb-8 md:pt-12 pb-6 w-full">
+      <aside className="max-h-screen container pt-16 pb-8 md:pt-12 pb-6 w-full overflow-auto">
         {children}
       </aside>
     </div>

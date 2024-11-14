@@ -92,11 +92,13 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   };
 
   return (
-    <div className="border-t border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+    <div className="border-t border-gray-200 dark:border-gray-700 px-4 pt-4 mb-2 sm:mb-0">
       {isLoadingSuggestions && <p>Loading suggestions...</p>}
       {suggestions.length > 0 && (
         <div className="mb-2">
-          <p className="text-sm text-gray-500">Suggestions:</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Suggestions:
+          </p>
           <div className="flex space-x-2">
             {suggestions.map((suggestion, index) => (
               <span
@@ -130,7 +132,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={`Message ${chatPartner.name}`}
-          className="block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
+          className="block w-full resize-none border-0 bg-transparent placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
         />
 
         <div

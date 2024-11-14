@@ -47,7 +47,7 @@ const Messages: FC<MessagesProps> = ({
   return (
     <div
       id="messages"
-      className="flex h-full flex-1 flex-col-reverse gap-1 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+      className="flex h-full flex-1 flex-col-reverse gap-1 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-w-2 scrolling-touch"
     >
       <div ref={scrollDownRef} />
       {messages.map((message, index) => {
@@ -67,11 +67,11 @@ const Messages: FC<MessagesProps> = ({
           <div key={`${message.id}-${message.timestamp}`}>
             {showDateSeparator && (
               <div className="flex items-center my-4">
-                <hr className="flex-grow border-gray-300" />
-                <span className="mx-4 text-gray-400">
+                <hr className="flex-grow border-gray-300 dark:border-gray-600" />
+                <span className="mx-4 text-gray-400 dark:text-gray-500">
                   {format(message.timestamp, "EEEE, MMMM d, yyyy")}
                 </span>
-                <hr className="flex-grow border-gray-300" />
+                <hr className="flex-grow border-gray-300 dark:border-gray-600" />
               </div>
             )}
             <div className="chat-message">
@@ -103,7 +103,7 @@ const Messages: FC<MessagesProps> = ({
                     <span
                       className={cn("ml-2 text-xs", {
                         "text-gray-200": isCurrentUser,
-                        "text-gray-400": !isCurrentUser,
+                        "text-gray-400 dark:text-gray-500": !isCurrentUser,
                       })}
                     >
                       {formatTimestamp(message.timestamp)}

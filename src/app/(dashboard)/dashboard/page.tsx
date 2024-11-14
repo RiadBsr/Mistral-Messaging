@@ -24,7 +24,9 @@ const page = async ({}) => {
         -1
       )) as string[];
 
-      const lastMessage = JSON.parse(lastMessageRaw) as Message;
+      const lastMessage = lastMessageRaw
+        ? (JSON.parse(lastMessageRaw) as Message)
+        : null;
 
       return {
         ...friend,
@@ -35,19 +37,19 @@ const page = async ({}) => {
 
   // Sort the chats by last message timestamp in descending order
   friendsWithLastMessage.sort(
-    (a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp
+    (a, b) => (b.lastMessage?.timestamp ?? 0) - (a.lastMessage?.timestamp ?? 0)
   );
 
   return (
     <div className="container py-12">
-      <h1 className="font-bold text-5xl mb-8">Recent chats</h1>
+      <h1 className="font-bold font-mono text-5xl mb-8">Recent chats</h1>
       {friendsWithLastMessage.length === 0 ? (
         <p className="text-sm text-zinc-500">No chats for now...</p>
       ) : (
         friendsWithLastMessage.map((friend) => (
           <div
             key={friend.id}
-            className="relative bg-zinc-50 border border-zinc-200 p-3 m-3 rounded-md"
+            className="relative bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-3 m-3 rounded-md"
           >
             <div className="absolute right-4 inset-y-0 flex items-center">
               <ChevronRight className="h-7 w-7 text-zinc-400" />
@@ -76,15 +78,20 @@ const page = async ({}) => {
                 <h4 className="text-lg font-semibold">{friend.name}</h4>
                 <p className="mt-1 max-w-md">
                   <span className="text-zinc-400">
-                    {friend.lastMessage.senderId === session.user.id
+                    {friend.lastMessage?.senderId === session.user.id
                       ? "You: "
                       : ""}
                   </span>
-                  {friend.lastMessage.text}
+                  {friend.lastMessage?.text}
                 </p>
                 {/* Display when the last message was sent */}
                 <p className="text-sm text-zinc-500">
-                  {format(friend.lastMessage.timestamp, "MMM d, yyyy, h:mm a")}
+                  {friend.lastMessage
+                    ? format(
+                        friend.lastMessage.timestamp,
+                        "MMM d, yyyy, h:mm a"
+                      )
+                    : ""}
                 </p>
               </div>
             </Link>
