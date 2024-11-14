@@ -80,29 +80,31 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
         role="list"
         className="max-h-[25rem] overflow-y-auto -mx-2 space-y-1 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-w-2 scrolling-touch"
       >
-        {activeChats.sort().map((friend) => {
-          const unseenMessagesCount = unseenMessages.filter((unseenMsg) => {
-            return unseenMsg.senderId === friend.id;
-          }).length;
-          return (
-            <li key={friend.id}>
-              <a
-                href={`/dashboard/chat/${chatHrefConstructor(
-                  sessionId,
-                  friend.id
-                )}`}
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-500 hover:bg-gray-50 dark:hover:bg-gray-700 group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-              >
-                {friend.name}
-                {unseenMessagesCount > 0 ? (
-                  <div className="bg-orange-500 font-medium text-xs text-white w-4 h-4 rounded-full flex justify-center items-center">
-                    {unseenMessagesCount}
-                  </div>
-                ) : null}
-              </a>
-            </li>
-          );
-        })}
+        {activeChats
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((friend) => {
+            const unseenMessagesCount = unseenMessages.filter((unseenMsg) => {
+              return unseenMsg.senderId === friend.id;
+            }).length;
+            return (
+              <li key={friend.id}>
+                <a
+                  href={`/dashboard/chat/${chatHrefConstructor(
+                    sessionId,
+                    friend.id
+                  )}`}
+                  className="text-gray-700 dark:text-gray-300 hover:text-orange-500 hover:bg-gray-50 dark:hover:bg-gray-700 group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                >
+                  {friend.name}
+                  {unseenMessagesCount > 0 ? (
+                    <div className="bg-orange-500 font-medium text-xs text-white w-4 h-4 rounded-full flex justify-center items-center">
+                      {unseenMessagesCount}
+                    </div>
+                  ) : null}
+                </a>
+              </li>
+            );
+          })}
       </ul>
     </>
   );

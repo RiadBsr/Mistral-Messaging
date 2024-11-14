@@ -123,7 +123,7 @@ const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
           </ul>
         </nav>
       </div>
-      <aside className="max-h-screen container pt-16 pb-8 md:pt-12 pb-6 w-full overflow-auto">
+      <aside className="max-h-screen container pt-16 pb-8 md:pt-12 pb-6 w-full">
         {children}
       </aside>
     </div>

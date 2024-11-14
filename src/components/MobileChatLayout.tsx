@@ -41,27 +41,27 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
   }, [pathname]);
 
   return (
-    <div className="fixed bg-zinc-50 border-b border-zinc-200 top-0 inset-x-0 py-2 px-4">
+    <div className="fixed bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700 top-0 inset-x-0 py-2 px-4">
       <div className="w-full flex justify-between items-center">
         <Link
           href="/dashboard"
           className={buttonVariants({ variants: "ghost" })}
         >
           <Icons.Logo className="h-10 w-auto pr-2 text-orange-600" />
-          <span className="font-bold text-lg font-mono select-none leading-tight">
+          <span className="font-bold text-lg font-mono select-none leading-tight text-gray-900 dark:text-gray-100">
             Mistral
             <br />
             Msg_
           </span>
         </Link>
         <Button onClick={() => setOpen(true)} className="gap-4">
-          Menu <Menu className="h-6 w-6" />
+          Menu <Menu className="h-6 w-6 text-gray-900 dark:text-gray-100" />
         </Button>
       </div>
       <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop
           transition
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
+          className="fixed inset-0 bg-gray-500 dark:bg-gray-900 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
         />
 
         <div className="fixed inset-0 overflow-hidden">
@@ -72,16 +72,16 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                 className="pointer-events-auto relative w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:-translate-x-full sm:duration-700"
               >
                 <TransitionChild>
-                  <div className="flex h-full flex-col overflow-hidden bg-white py-6 shadow-xl">
+                  <div className="flex h-full flex-col overflow-hidden bg-white dark:bg-zinc-800 py-6 shadow-xl">
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
+                        <Dialog.Title className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">
                           Dashboard
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
-                            className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                            className="rounded-md bg-white dark:bg-zinc-800 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                             onClick={() => setOpen(false)}
                           >
                             <span className="sr-only">Close panel</span>
@@ -91,13 +91,6 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                       </div>
                     </div>
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
-                      {/* Your content */}
-                      {friends.length > 0 ? (
-                        <div className="text-xs font-semibold leading-6 text-gray-400 dark:text-gray-300">
-                          Your chats
-                        </div>
-                      ) : null}
-
                       <nav className="flex flex-1 flex-col">
                         <ul
                           role="list"
@@ -123,7 +116,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                                       href={option.href}
                                       className="text-gray-700 dark:text-gray-300 hover:text-orange-600 hover:bg-gray-50 dark:hover:bg-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                     >
-                                      <span className="text-gray-400 border-gray-200 group-hover:border-orange-600 group-hover:text-orange-600 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white">
+                                      <span className="text-gray-400 border-gray-200 group-hover:border-orange-600 group-hover:text-orange-600 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white dark:bg-zinc-800">
                                         <Icon className="h-4 w-4" />
                                       </span>
                                       <span className="truncate">
@@ -144,8 +137,8 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                           </li>
 
                           <li className="-ml-6 mt-auto flex items-center">
-                            <div className="flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
-                              <div className="relative h-8 w-8 bg-gray-50">
+                            <div className="flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
+                              <div className="relative h-8 w-8 bg-gray-50 dark:bg-zinc-800">
                                 <Image
                                   fill
                                   referrerPolicy="no-referrer"
@@ -161,7 +154,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                                   {session.user.name}
                                 </span>
                                 <span
-                                  className="text-xs text-zinc-400"
+                                  className="text-xs text-zinc-400 dark:text-zinc-500"
                                   aria-hidden="true"
                                 >
                                   {session.user.email}
@@ -173,8 +166,6 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
                           </li>
                         </ul>
                       </nav>
-
-                      {/* Content end */}
                     </div>
                   </div>
                 </TransitionChild>
