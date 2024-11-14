@@ -22,15 +22,15 @@ export default function Home() {
       if (index === fullText.length) {
         clearInterval(interval);
       }
-    }, 50);
+    }, 5);
     return () => clearInterval(interval);
   }, []);
 
   const handleSignIn = () => {
     // Fade out the gradient overlay
     setGradientOpacity("opacity-0");
-    // Move the content upwards
-    setContentTransform("-translate-y-20");
+    // Move the content downwards
+    setContentTransform("translate-y-[3.5rem]");
     // Change text color to white
     setTextColor("text-white");
     // Navigate to the login page after the animation completes
