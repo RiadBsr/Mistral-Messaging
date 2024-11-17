@@ -6,10 +6,10 @@ import axios from "axios";
 import { FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
-import Button from "./ui/Button";
 import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
 import { Message } from "@/lib/validations/message";
+import { Send } from "lucide-react";
 
 interface ChatInputProps {
   chatPartner: User;
@@ -18,7 +18,7 @@ interface ChatInputProps {
 
 const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isLoadingSuggestions, setIsLoadingSuggestions] =
@@ -77,7 +77,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
 
   const sendMessage = async () => {
     if (!input) return;
-    setIsLoading(true);
+    // setIsLoading(true);
 
     try {
       await axios.post("/api/message/send", { text: input, chatId });
@@ -86,8 +86,8 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
       textareaRef.current?.focus();
     } catch {
       toast.error("Something went wrong. Please try again later.");
-    } finally {
-      setIsLoading(false);
+      // } finally {
+      //   setIsLoading(false);
     }
   };
 
@@ -95,67 +95,54 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
     <div className="border-t border-gray-200 dark:border-gray-700 px-4 pt-4 mb-2 sm:mb-0">
       {isLoadingSuggestions && <p>Loading suggestions...</p>}
       {suggestions.length > 0 && (
-        <div className="mb-2">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Suggestions:
-          </p>
-          <div className="flex space-x-2">
-            {suggestions.map((suggestion, index) => (
-              <span
-                className={
-                  "px-4 py-2 rounded-lg inline-block bg-orange-600 text-white"
-                }
+        <div className="mb-2 flex space-x-2">
+          {suggestions.map((suggestion, index) => (
+            <span
+              className={
+                "px-4 py-2 rounded-lg inline-block bg-orange-600 text-white"
+              }
+              key={index}
+            >
+              <button
                 key={index}
+                onClick={() => setInput(suggestion)}
+                className="flex items-center justify-center h-full"
               >
-                <button
-                  key={index}
-                  onClick={() => setInput(suggestion)}
-                  className="flex items-center justify-center h-full"
-                >
-                  {suggestion}
-                </button>
-              </span>
-            ))}
-          </div>
+                {suggestion}
+              </button>
+            </span>
+          ))}
         </div>
       )}
       <div className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-orange-500">
-        <TextareaAutosize
-          ref={textareaRef}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              sendMessage();
-            }
-          }}
-          rows={1}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={`Message ${chatPartner.name}`}
-          className="block w-full resize-none border-0 bg-transparent placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
-        />
-
-        <div
-          onClick={() => textareaRef.current?.focus()}
-          className="py-2"
-          aria-hidden="true"
-        >
-          <div className="py-px">
-            <div className="h-9" />
-          </div>
-        </div>
-
-        <div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
-          <div className="flex-shrin-0">
-            <Button
-              isLoading={isLoading}
-              onClick={sendMessage}
-              type="submit"
-              variants={input ? "default" : "ghost"}
-            >
-              Send
-            </Button>
-          </div>
+        <div className="flex items-center py-2 pl-3 pr-2">
+          <TextareaAutosize
+            ref={textareaRef}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
+            rows={1}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={`Message ${
+              chatPartner.name.length > 20
+                ? chatPartner.name.slice(0, 20) + "..."
+                : chatPartner.name
+            }`}
+            className="flex-grow block w-full resize-none border-0 bg-transparent placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
+          />
+          <button
+            onClick={input ? sendMessage : undefined}
+            disabled={!input}
+            className={`m-2 ${
+              input ? "text-orange-500" : "text-gray-400 cursor-default"
+            }`}
+          >
+            <Send />
+          </button>
         </div>
       </div>
     </div>

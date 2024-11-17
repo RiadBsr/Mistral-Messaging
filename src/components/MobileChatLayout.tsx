@@ -9,7 +9,6 @@ import {
 } from "@headlessui/react";
 import Link from "next/link";
 import { Icons } from "./Icons";
-import Button, { buttonVariants } from "./ui/Button";
 import { Menu, X } from "lucide-react";
 import SignOutButton from "./SignOutButton";
 import { usePathname } from "next/navigation";
@@ -43,10 +42,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
   return (
     <div className="fixed bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700 top-0 inset-x-0 py-2 px-4">
       <div className="w-full flex justify-between items-center">
-        <Link
-          href="/dashboard"
-          className={buttonVariants({ variants: "ghost" })}
-        >
+        <Link href="/dashboard" className="flex h-25 shrink-0 items-center">
           <Icons.Logo className="h-10 w-auto pr-2 text-orange-600" />
           <span className="font-bold text-lg font-mono select-none leading-tight text-gray-900 dark:text-gray-100">
             Mistral
@@ -54,9 +50,10 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
             Msg_
           </span>
         </Link>
-        <Button onClick={() => setOpen(true)} className="gap-4">
-          Menu <Menu className="h-6 w-6 text-gray-900 dark:text-gray-100" />
-        </Button>
+        <Menu
+          onClick={() => setOpen(true)}
+          className="h-6 w-6 text-gray-900 dark:text-gray-100"
+        />
       </div>
       <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop

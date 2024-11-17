@@ -52,19 +52,15 @@ const page = async ({}) => {
               key={friend.id}
               className="relative bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-3 m-3 rounded-md"
             >
-              <div className="absolute right-4 inset-y-0 flex items-center">
-                <ChevronRight className="h-7 w-7 text-zinc-400" />
-              </div>
-
               <Link
                 href={`/dashboard/chat/${chatHrefConstructor(
                   session.user.id,
                   friend.id
                 )}`}
-                className="relative flex"
+                className="relative flex items-center"
               >
-                <div className="mb-4 flex-shrink-0 mr-4">
-                  <div className="relative h-6 w-6">
+                <div className="flex-shrink-0 mr-4">
+                  <div className="relative h-10 w-10">
                     <Image
                       referrerPolicy="no-referrer"
                       className="rounded-full"
@@ -75,9 +71,11 @@ const page = async ({}) => {
                   </div>
                 </div>
 
-                <div>
-                  <h4 className="text-lg font-semibold">{friend.name}</h4>
-                  <p className="mt-1 max-w-md">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-lg font-semibold truncate">
+                    {friend.name}
+                  </h4>
+                  <p className="mt-1 max-w-md line-clamp-2">
                     <span className="text-zinc-400">
                       {friend.lastMessage?.senderId === session.user.id
                         ? "You: "
@@ -85,15 +83,19 @@ const page = async ({}) => {
                     </span>
                     {friend.lastMessage?.text}
                   </p>
-                  {/* Display when the last message was sent */}
+
                   <p className="text-sm text-zinc-500">
                     {friend.lastMessage
                       ? format(
                           friend.lastMessage.timestamp,
                           "MMM d, yyyy, h:mm a"
                         )
-                      : ""}
+                      : "No messages yet..."}
                   </p>
+                </div>
+
+                <div className="ml-4 flex-shrink-0">
+                  <ChevronRight className="h-7 w-7 text-zinc-400" />
                 </div>
               </Link>
             </div>
