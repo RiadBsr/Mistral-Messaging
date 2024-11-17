@@ -138,11 +138,11 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   return (
     <div className="border-t border-gray-200 dark:border-gray-700 px-4 pt-2 mb-2 sm:mb-0">
       <motion.div
-        initial={{ height: 0, opacity: 0 }}
+        initial={{ height: 0, opacity: 0, pointerEvents: "none" }}
         animate={
           isLoadingSuggestions
             ? { height: "auto", opacity: 1 }
-            : { height: 0, opacity: 0 }
+            : { height: 0, opacity: 0, pointerEvents: "none" }
         }
         transition={{ duration: 0.2 }}
         className={isLoadingSuggestions ? "animate-pulse" : ""}
@@ -153,7 +153,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
         animate={
           suggestions.length > 0
             ? { height: "auto", opacity: 1 }
-            : { height: 0, opacity: 0 }
+            : { height: 0, opacity: 0, pointerEvents: "none" }
         }
         transition={{ duration: 0.2 }}
       >
@@ -216,11 +216,11 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
           </button>
         </div>
         <motion.div
-          initial={{ height: 0, opacity: 0 }}
+          initial={{ height: 0, opacity: 0, pointerEvents: "none" }}
           animate={
             showPromptInput
-              ? { height: 55, opacity: 1 }
-              : { height: 0, opacity: 0 }
+              ? { height: 55, opacity: 1, pointerEvents: "auto" }
+              : { height: 0, opacity: 0, pointerEvents: "none" }
           }
           transition={{ duration: 0.3 }}
           className="border-t border-gray-200 dark:border-gray-700 flex items-center px-1 mx-2"

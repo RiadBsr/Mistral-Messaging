@@ -75,6 +75,8 @@ Based on these instructions, generate three opening message suggestions for the 
 
 Ensure that the replies are varied and nuanced; they should not all be similar or follow the same sentiment, especially if the last message was a question. Provide different options that are contextually appropriate, whether positive, neutral, or negative as suitable.
 
+Identify if the last message was from the user or partner to determine whether a reply is being prompted, is normal, or delayed based on the elapsed time.
+
 Consider the current time of day: it's currently the ${currentTimeOfDay}. Also, the last message was sent ${elapsedTime}.
 
 Conversation history:
@@ -82,7 +84,8 @@ ${
   messages.length > 0
     ? messages
         .map((m) => {
-          const role = m.senderId === session.user.id ? "User" : "Partner";
+          const role =
+            m.senderId === session.user.id ? "Current User" : "Chat Partner";
           return `${role}: ${m.text}`;
         })
         .join("\n")
