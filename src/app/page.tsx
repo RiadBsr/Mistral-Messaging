@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/Button";
 import { Icons } from "@/components/Icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -11,26 +11,47 @@ export default function Home() {
   const [contentTransform, setContentTransform] = useState("");
   const [textColor, setTextColor] = useState("text-black");
   const fullText =
-    "This application provides real-time messaging functionality, built using Next.js and integrated with Mistral AI. Users can send and receive messages instantly, with AI features seamlessly incorporated into the experience.";
+    "Real-time messaging with AI-powered contextual reply suggestions and rewriting.";
   const router = useRouter();
+  const [speed, setSpeed] = useState(50); // Default speed is 50ms
+  const indexRef = useRef(0);
+  const timeoutRef = useRef<any>();
 
   useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      setText(fullText.slice(0, index + 1));
-      index++;
-      if (index === fullText.length) {
-        clearInterval(interval);
+    const updateText = () => {
+      setText(fullText.slice(0, indexRef.current + 1));
+      indexRef.current++;
+      if (indexRef.current < fullText.length) {
+        timeoutRef.current = setTimeout(updateText, speed);
       }
-    }, 50);
-    return () => clearInterval(interval);
+    };
+    updateText();
+    return () => clearTimeout(timeoutRef.current);
+  }, [speed]);
+
+  useEffect(() => {
+    const handleMouseDown = () => {
+      setSpeed(5);
+    };
+
+    const handleMouseUp = () => {
+      setSpeed(50);
+    };
+
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
   }, []);
 
   const handleSignIn = () => {
     // Fade out the gradient overlay
     setGradientOpacity("opacity-0");
     // Move the content downwards
-    setContentTransform("translate-y-[3.5rem]");
+    setContentTransform("translate-y-[1.5rem]");
     // Change text color to white
     setTextColor("text-white");
     // Navigate to the login page after the animation completes
@@ -61,14 +82,14 @@ export default function Home() {
           </span>
         </div>
         <p
-          className={`pb-6 text-base sm:text-lg max-w-xl sm:max-w-2xl font-bold font-mono text-center transition-colors duration-1000 ${textColor}`}
+          className={`pb-6 text-base sm:text-lg max-w-xl sm:max-w-2xl font-bold font-mono text-center transition-colors duration-1000 ${textColor} select-none`}
         >
           {text}
         </p>
         <div className="my-8">
           {text === fullText && (
             <Button
-              className="font-bold font-mono rounded-none"
+              className="font-bold font-mono rounded-none select-none"
               onClick={handleSignIn}
             >
               Sign In

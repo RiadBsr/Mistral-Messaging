@@ -3,6 +3,7 @@
 import { Icons } from "@/components/Icons";
 import Button from "@/components/ui/Button";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -23,18 +24,20 @@ const Page: FC = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="w-full flex flex-col items-center max-w-md space-y-8">
-        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 pb-10">
-          <Icons.Logo
-            width={150}
-            height={150}
-            className="w-24 h-24 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
-          />
-          <span className="font-bold text-black text-4xl sm:text-5xl lg:text-6xl font-mono select-none leading-tight flex items-center text-center sm:text-left">
-            Mistral
-            <br />
-            Msg_
-          </span>
-        </div>
+        <Link href="/">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 pb-10">
+            <Icons.Logo
+              width={150}
+              height={150}
+              className="w-24 h-24 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+            />
+            <span className="font-bold text-black text-4xl sm:text-5xl lg:text-6xl font-mono select-none leading-tight flex items-center text-center sm:text-left">
+              Mistral
+              <br />
+              Msg_
+            </span>
+          </div>
+        </Link>
         <h2 className="mt-6 text-center text-2xl sm:text-3xl font-mono font-bold tracking-tight text-gray-900">
           Sign in
         </h2>
