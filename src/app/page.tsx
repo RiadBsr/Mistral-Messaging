@@ -15,7 +15,7 @@ export default function Home() {
   const router = useRouter();
   const [speed, setSpeed] = useState(50); // Default speed is 50ms
   const indexRef = useRef(0);
-  const timeoutRef = useRef<any>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const updateText = () => {
@@ -26,7 +26,11 @@ export default function Home() {
       }
     };
     updateText();
-    return () => clearTimeout(timeoutRef.current);
+    return () => {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, [speed]);
 
   useEffect(() => {
