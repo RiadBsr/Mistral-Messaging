@@ -82,12 +82,22 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
       >
         {activeChats
           .sort((a, b) => a.name.localeCompare(b.name))
-          .map((friend) => {
+          .map((friend, index, array) => {
             const unseenMessagesCount = unseenMessages.filter((unseenMsg) => {
               return unseenMsg.senderId === friend.id;
             }).length;
+            const previousFriend = array[index - 1];
+            const showLetterHeader =
+              !previousFriend ||
+              previousFriend.name[0].toUpperCase() !==
+                friend.name[0].toUpperCase();
             return (
               <li key={friend.id}>
+                {showLetterHeader && (
+                  <div className="text-xs font-bold text-gray-500 dark:text-gray-400">
+                    {friend.name[0].toUpperCase()}
+                  </div>
+                )}
                 <a
                   href={`/dashboard/chat/${chatHrefConstructor(
                     sessionId,
@@ -95,7 +105,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
                   )}`}
                   className="text-gray-700 dark:text-gray-300 hover:text-orange-500 hover:bg-gray-50 dark:hover:bg-gray-700 group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                 >
-                  {friend.name}
+                  {friend.name.charAt(0).toUpperCase() + friend.name.slice(1)}
                   {unseenMessagesCount > 0 ? (
                     <div className="bg-orange-500 font-medium text-xs text-white w-4 h-4 rounded-full flex justify-center items-center">
                       {unseenMessagesCount}
