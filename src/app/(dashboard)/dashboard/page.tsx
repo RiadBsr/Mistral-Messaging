@@ -93,9 +93,15 @@ const page = async ({}) => {
                   <p className="text-sm text-zinc-500">
                     {friend.lastMessage
                       ? isToday(friend.lastMessage.timestamp)
-                        ? "Today"
+                        ? `Today at ${format(
+                            friend.lastMessage.timestamp,
+                            "h:mm a"
+                          )}`
                         : isYesterday(friend.lastMessage.timestamp)
-                        ? "Yesterday"
+                        ? `Yesterday at ${format(
+                            friend.lastMessage.timestamp,
+                            "h:mm a"
+                          )}`
                         : format(
                             friend.lastMessage.timestamp,
                             "MMM d, yyyy, h:mm a"
