@@ -7,7 +7,9 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { format } from "date-fns";
+import { format, isToday, isYesterday } from "date-fns";
+import AddDeveloperCardClient from "@/components/AddDeveloperCard";
+import { getUserByEmail } from "@/helpers/get-user-by-email";
 
 const page = async ({}) => {
   const session = await getServerSession(authOptions);
@@ -40,11 +42,18 @@ const page = async ({}) => {
     (a, b) => (b.lastMessage?.timestamp ?? 0) - (a.lastMessage?.timestamp ?? 0)
   );
 
+  const developer = (await getUserByEmail("riad.boussoura@gmail.com")) as User;
+
   return (
     <div className="container py-10">
       <h1 className="font-bold font-mono text-5xl mb-8">Recent chats</h1>
       {friendsWithLastMessage.length === 0 ? (
-        <p className="text-sm text-zinc-500">No chats for now...</p>
+        <>
+          <p className="text-sm text-zinc-500 mb-4">No chats for now...</p>
+          <div className="mt-8">
+            <AddDeveloperCardClient developer={developer} />
+          </div>
+        </>
       ) : (
         <div className="max-h-[calc(100vh-15rem)] overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-w-2 scrolling-touch">
           {friendsWithLastMessage.map((friend) => (
@@ -86,10 +95,14 @@ const page = async ({}) => {
 
                   <p className="text-sm text-zinc-500">
                     {friend.lastMessage
-                      ? format(
-                          friend.lastMessage.timestamp,
-                          "MMM d, yyyy, h:mm a"
-                        )
+                      ? isToday(friend.lastMessage.timestamp)
+                        ? "Today"
+                        : isYesterday(friend.lastMessage.timestamp)
+                        ? "Yesterday"
+                        : format(
+                            friend.lastMessage.timestamp,
+                            "MMM d, yyyy, h:mm a"
+                          )
                       : "No messages yet..."}
                   </p>
                 </div>

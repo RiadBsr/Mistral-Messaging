@@ -7,6 +7,7 @@ import axios, { AxiosError } from "axios";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-hot-toast";
 
 type FormData = z.infer<typeof addFriendValidator>;
 
@@ -29,6 +30,7 @@ const AddFriendButton: FC = ({}) => {
         email: validatedEmail,
       });
       setShowSuccessState(true);
+      toast.success("Friend request sent!");
     } catch (error) {
       if (error instanceof z.ZodError) {
         setError("email", { message: error.message });
@@ -36,9 +38,11 @@ const AddFriendButton: FC = ({}) => {
       }
       if (error instanceof AxiosError) {
         setError("email", { message: error.response?.data });
+        toast.error(error.response?.data);
         return;
       }
       setError("email", { message: "Something went wrong." });
+      toast.error("Something went wrong.");
     }
   };
 

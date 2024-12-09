@@ -2,7 +2,7 @@
 
 import { cn, toPusherKey } from "@/lib/utils";
 import Image from "next/image";
-import { format } from "date-fns";
+import { format, isToday, isYesterday } from "date-fns";
 import { FC, useEffect, useRef, useState } from "react";
 import { pusherClient } from "@/lib/pusher";
 import { Message } from "@/lib/validations/message";
@@ -63,13 +63,19 @@ const Messages: FC<MessagesProps> = ({
 
         const showDateSeparator = currentMessageDate !== previousMessageDate;
 
+        const formattedDate = isToday(message.timestamp)
+          ? "Today"
+          : isYesterday(message.timestamp)
+          ? "Yesterday"
+          : format(message.timestamp, "EEEE, MMMM d, yyyy");
+
         return (
           <div key={`${message.id}-${message.timestamp}`}>
             {showDateSeparator && (
               <div className="flex items-center my-4">
                 <hr className="flex-grow border-gray-300 dark:border-gray-600" />
                 <span className="mx-4 text-gray-400 dark:text-gray-500">
-                  {format(message.timestamp, "EEEE, MMMM d, yyyy")}
+                  {formattedDate}
                 </span>
                 <hr className="flex-grow border-gray-300 dark:border-gray-600" />
               </div>
