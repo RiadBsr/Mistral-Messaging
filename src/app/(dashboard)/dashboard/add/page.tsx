@@ -1,9 +1,8 @@
 import AddFriendButton from "@/components/AddFriendButton";
-import { FC } from "react";
 import AddDeveloperCardClient from "@/components/AddDeveloperCard";
 import { getUserByEmail } from "@/helpers/get-user-by-email";
 
-const page: FC = async () => {
+const page = async () => {
   const developer = (await getUserByEmail("riad.boussoura@gmail.com")) as User;
 
   return (
