@@ -11,7 +11,7 @@ import { getServerSession, User } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface layoutProps {
   children: ReactNode;
@@ -26,7 +26,7 @@ const sidebarOptions: SidebarOption[] = [
   },
 ];
 
-const layout: FC<layoutProps> = async ({ children }: layoutProps) => {
+const layout = async ({ children }: layoutProps) => {
   const session = await getServerSession(authOptions);
   if (!session) notFound();
 
