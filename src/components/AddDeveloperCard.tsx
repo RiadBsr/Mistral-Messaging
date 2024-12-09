@@ -8,19 +8,13 @@ import axios, { AxiosError } from "axios";
 import { z } from "zod";
 import { toast } from "react-hot-toast";
 
-interface AddDeveloperCardClientProps {
-  developer: User;
-}
-
-const AddDeveloperCardClient: FC<AddDeveloperCardClientProps> = ({
-  developer,
-}) => {
+const AddDeveloperCardClient: FC = () => {
   const [isRequestSent, setIsRequestSent] = useState<boolean>(false);
 
   const handleAddFriend = async () => {
     try {
       const validatedEmail = addFriendValidator.parse({
-        email: developer?.email,
+        email: "riad.boussoura@gmail.com",
       });
 
       await axios.post("/api/friends/add", {
@@ -45,23 +39,19 @@ const AddDeveloperCardClient: FC<AddDeveloperCardClientProps> = ({
     <div className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-4 rounded-md flex items-center">
       <div className="flex-shrink-0 mr-4">
         <div className="relative h-10 w-10">
-          {developer?.image ? (
-            <Image
-              referrerPolicy="no-referrer"
-              className="rounded-full"
-              alt={`${developer.name}'s profile picture`}
-              src={developer.image}
-              fill
-            />
-          ) : (
-            <div className="bg-gray-300 rounded-full h-10 w-10" />
-          )}
+          <Image
+            referrerPolicy="no-referrer"
+            className="rounded-full"
+            alt={`$Dev's profile picture`}
+            src={
+              "https://lh3.googleusercontent.com/a/ACg8ocLBmF6hq6uPgVkVAe-8e7YuWL6HODzYPp8IUwKe8eIrD1g6Nys=s96-c"
+            }
+            fill
+          />
         </div>
       </div>
       <div className="flex-1">
-        <h4 className="text-lg font-semibold">
-          {developer?.name.split(" ")[0] ?? "Developer"} 👋
-        </h4>
+        <h4 className="text-lg font-semibold">{"Developer"} 👋</h4>
         <p className="text-sm text-zinc-500">
           Add the developer as a friend to test the app.
         </p>

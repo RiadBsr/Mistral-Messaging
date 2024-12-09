@@ -9,7 +9,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { format, isToday, isYesterday } from "date-fns";
 import AddDeveloperCardClient from "@/components/AddDeveloperCard";
-import { getUserByEmail } from "@/helpers/get-user-by-email";
 
 const page = async ({}) => {
   const session = await getServerSession(authOptions);
@@ -42,8 +41,6 @@ const page = async ({}) => {
     (a, b) => (b.lastMessage?.timestamp ?? 0) - (a.lastMessage?.timestamp ?? 0)
   );
 
-  const developer = (await getUserByEmail("riad.boussoura@gmail.com")) as User;
-
   return (
     <div className="container py-10">
       <h1 className="font-bold font-mono text-5xl mb-8">Recent chats</h1>
@@ -51,7 +48,7 @@ const page = async ({}) => {
         <>
           <p className="text-sm text-zinc-500 mb-4">No chats for now...</p>
           <div className="mt-8">
-            <AddDeveloperCardClient developer={developer} />
+            <AddDeveloperCardClient />
           </div>
         </>
       ) : (
