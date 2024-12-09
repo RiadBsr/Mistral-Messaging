@@ -7,6 +7,7 @@ import { fetchRedis } from "@/helpers/redis";
 import { Mistral } from "@mistralai/mistralai";
 import { messageArrayValidator } from "@/lib/validations/message";
 import { Message } from "@/lib/validations/message";
+import { differenceInMinutes, differenceInHours } from "date-fns";
 
 export async function POST(req: Request) {
   try {
@@ -39,9 +40,8 @@ export async function POST(req: Request) {
     function getElapsedTime(lastTimestamp: string | number | Date) {
       const now = new Date();
       const lastMessageTime = new Date(lastTimestamp);
-      const diffMs = now.getTime() - lastMessageTime.getTime();
-      const diffMinutes = Math.floor(diffMs / 60000);
-      const diffHours = Math.floor(diffMs / 3600000);
+      const diffMinutes = differenceInMinutes(now, lastMessageTime);
+      const diffHours = differenceInHours(now, lastMessageTime);
 
       if (diffHours > 0) {
         return `${diffHours} hour(s) ago`;
@@ -61,39 +61,54 @@ export async function POST(req: Request) {
       const lastMessage = messages[messages.length - 1];
       elapsedTime = getElapsedTime(lastMessage.timestamp);
     }
-    // Define the prompt for generating opening messages
-    const openingPrompt = `You are an AI assistant that generates three natural and varied opening messages or greetings for initiating a conversation. The suggestions should closely resemble the user's writing style, including punctuation, capitalization, and any unique stylistic choices. Pay attention to how the user structures sentences, uses abbreviations, emojis, or any other distinctive features.
 
-Ensure that the greetings are appropriate for the time of day: it's currently the ${currentTimeOfDay}. The suggestions should be nuanced and not all follow the same sentiment or structure. Provide different options that feel natural and engaging to start a conversation.
+    // Determine who sent the last message
+    const lastMessage =
+      messages.length > 0 ? messages[messages.length - 1] : null;
+    const lastSenderIsUser = lastMessage?.senderId === session.user.id;
 
-If there is no conversation history yet, suggest appropriate opening messages or natural greetings that people usually use when chatting online.
+    // Update 'elapsedTime'
+    elapsedTime = lastMessage
+      ? getElapsedTime(lastMessage.timestamp)
+      : elapsedTime;
 
-Based on these instructions, generate three opening message suggestions for the user to start a conversation. The suggestions should match the user's writing style and be contextually appropriate for initiating a chat. Output only the suggestions as a JSON array of strings without any additional text, code snippets, or code fences.
-`;
+    // Craft the prompt based on the conversation situation
+    let prompt = "";
 
-    const prompt = `You are an AI assistant that generates three natural and nuanced reply suggestions based on the conversation history below. The suggestions should closely resemble the user's writing style, including punctuation, capitalization, and any unique stylistic choices. Pay attention to how the user structures sentences, uses abbreviations, emojis, or any other distinctive features.
+    if (!lastMessage) {
+      // No messages yet, use opening prompt
+      prompt = `You are an AI assistant that generates three natural and varied opening messages or greetings for initiating a conversation. The suggestions should closely resemble the user's writing style, including punctuation, capitalization, and any unique stylistic choices. Pay attention to how the user structures sentences, uses abbreviations, emojis, or any other distinctive features.
 
-Ensure that the replies are varied and nuanced; they should not all be similar or follow the same sentiment, especially if the last message was a question. Provide different options that are contextually appropriate, whether positive, neutral, or negative as suitable.
+Ensure that the greetings are appropriate for the time of day: it's currently the ${currentTimeOfDay}. Provide different options that feel natural and engaging to start a conversation.
 
-Identify if the last message was from the user or partner to determine whether a reply is being prompted, is normal, or delayed based on the elapsed time.
-
-Consider the current time of day: it's currently the ${currentTimeOfDay}. Also, the last message was sent ${elapsedTime}.
+Based on these instructions, generate three opening message suggestions for the user to start a conversation. Output only the suggestions as a JSON array of strings without any additional text, code snippets, or code fences.`;
+    } else if (lastSenderIsUser) {
+      // Last message sent by the user
+      prompt = `You are an AI assistant that helps the user continue the conversation naturally. The last message was sent by the user ${elapsedTime}. Based on the conversation history below, generate three natural and engaging messages for the user to send next. Ensure the messages align with the user's writing style, including punctuation, capitalization, and any unique stylistic choices. Consider the time of day: it's currently the ${currentTimeOfDay}.
 
 Conversation history:
-${
-  messages.length > 0
-    ? messages
-        .map((m) => {
-          const role =
-            m.senderId === session.user.id ? "Current User" : "Chat Partner";
-          return `${role}: ${m.text}`;
-        })
-        .join("\n")
-    : "No messages yet."
-}
+${messages
+  .map((m) => {
+    const role = m.senderId === session.user.id ? "User" : "Chat Partner";
+    return `${role}: ${m.text}`;
+  })
+  .join("\n")}
 
-Based on the conversation, generate three reply suggestions for the user to reply with. The suggestions should be coherent with the current discussion and match the user's writing style. Output only the suggestions as a JSON array of strings without any additional text, code snippets, or code fences.
-`;
+Based on the conversation, generate three suggestions for the user to continue the conversation. Output only the suggestions as a JSON array of strings without any additional text, code snippets, or code fences.`;
+    } else {
+      // Last message sent by the chat partner
+      prompt = `You are an AI assistant that generates three natural and nuanced reply suggestions based on the conversation history below. The last message was sent by the chat partner ${elapsedTime}. Ensure the replies are varied and nuanced; they should not all be similar or follow the same sentiment, especially if the last message was a question. The suggestions should closely resemble the user's writing style, including punctuation, capitalization, and any unique stylistic choices. Consider the time of day: it's currently the ${currentTimeOfDay}.
+
+Conversation history:
+${messages
+  .map((m) => {
+    const role = m.senderId === session.user.id ? "User" : "Chat Partner";
+    return `${role}: ${m.text}`;
+  })
+  .join("\n")}
+
+Based on the conversation, generate three reply suggestions for the user to reply with. The suggestions should be coherent with the current discussion and match the user's writing style. Output only the suggestions as a JSON array of strings without any additional text, code snippets, or code fences.`;
+    }
 
     // Initialize the Mistral client
     const apiKey = process.env.MISTRAL_API_KEY;
@@ -107,9 +122,9 @@ Based on the conversation, generate three reply suggestions for the user to repl
       {
         role: "system",
         content:
-          "You are a helpful assistant that generates reply suggestions by analyzing the user's writing style, including punctuation, capitalization, and stylistic choices.",
+          "You are a helpful assistant that generates reply suggestions by analyzing the user's writing style and the conversation context.",
       },
-      { role: "user", content: messages.length > 0 ? prompt : openingPrompt },
+      { role: "user", content: prompt },
     ];
 
     const chatResponse = await client.chat.complete({
