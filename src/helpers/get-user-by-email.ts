@@ -7,12 +7,7 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
     return null;
   }
 
-  const userData = (await fetchRedis("get", `user:${userId}`)) as string | null;
-
-  if (!userData) {
-    return null;
-  }
-
-  const user = JSON.parse(userData) as User;
+  const userRaw = await fetchRedis("get", `user:${userId}`);
+  const user = JSON.parse(userRaw) as User;
   return user;
 };
