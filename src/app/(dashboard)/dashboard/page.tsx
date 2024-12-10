@@ -43,7 +43,9 @@ const page = async ({}) => {
 
   return (
     <div className="container py-10">
-      <h1 className="font-bold font-mono text-5xl mb-8">Recent chats</h1>
+      <h1 className="font-bold font-mono mb-8 text-3xl sm:text-5xl">
+        Recent chats
+      </h1>
       {friendsWithLastMessage.length === 0 ? (
         <>
           <p className="text-sm text-zinc-500 mb-4">No chats for now...</p>
@@ -81,7 +83,7 @@ const page = async ({}) => {
                   <h4 className="text-lg font-semibold truncate">
                     {friend.name}
                   </h4>
-                  <p className="mt-1 max-w-md line-clamp-2">
+                  <p className="mt-1 max-w-md line-clamp-1">
                     <span className="text-zinc-400">
                       {friend.lastMessage?.senderId === session.user.id
                         ? "You: "
