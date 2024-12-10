@@ -6,6 +6,7 @@ import { format, isToday, isYesterday } from "date-fns";
 import { FC, useEffect, useRef, useState } from "react";
 import { pusherClient } from "@/lib/pusher";
 import { Message } from "@/lib/validations/message";
+import axios from "axios";
 
 interface MessagesProps {
   sessionId: string;
@@ -13,6 +14,7 @@ interface MessagesProps {
   sessionImg: string | null | undefined;
   chatPartner: User;
   chatId: string;
+  initialLastSeenMessageId: string | null; // Add this prop
 }
 
 const Messages: FC<MessagesProps> = ({
@@ -21,23 +23,65 @@ const Messages: FC<MessagesProps> = ({
   sessionImg,
   chatPartner,
   chatId,
+  initialLastSeenMessageId,
 }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [lastSeenMessageId, setLastSeenMessageId] = useState<string | null>(
+    initialLastSeenMessageId
+  );
 
   useEffect(() => {
-    pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
+    const markAsSeen = async () => {
+      if (messages.length > 0) {
+        const lastMessage = messages[0];
+        if (lastMessage.senderId !== sessionId) {
+          await axios.post("/api/message/seen", {
+            chatId,
+            messageId: lastMessage.id,
+          });
+        }
+      }
+    };
+
+    markAsSeen();
+
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`));
 
     const messageHandler = (message: Message) => {
       setMessages((prev) => [message, ...prev]);
+
+      // If the new message is from the chat partner, send "seen" event
+      if (message.senderId !== sessionId) {
+        axios.post("/api/message/seen", {
+          chatId,
+          messageId: message.id,
+        });
+
+        // Reset lastSeenMessageId when a new message is received from the chat partner
+        setLastSeenMessageId(null);
+      }
+    };
+
+    const seenHandler = (data: {
+      chatId: string;
+      messageId: string;
+      seenBy: string;
+    }) => {
+      // Update "lastSeenMessageId" only if the message was seen by the chat partner
+      if (data.seenBy === chatPartner.id && data.chatId === chatId) {
+        setLastSeenMessageId(data.messageId);
+      }
     };
 
     pusherClient.bind("incoming_message", messageHandler);
+    pusherClient.bind("message_seen", seenHandler);
 
     return () => {
-      pusherClient.unsubscribe(toPusherKey(`chat:${chatId}:incoming_message`));
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:chats`));
       pusherClient.unbind("incoming_message", messageHandler);
+      pusherClient.unbind("message_seen", seenHandler);
     };
-  }, [chatId]);
+  }, [chatId, messages, sessionId, chatPartner.id]);
 
   const scrollDownRef = useRef<HTMLDivElement>(null);
 
@@ -68,6 +112,11 @@ const Messages: FC<MessagesProps> = ({
           : isYesterday(message.timestamp)
           ? "Yesterday"
           : format(message.timestamp, "EEEE, MMMM d, yyyy");
+
+        const showSeenIndicator =
+          isCurrentUser &&
+          message.id === lastSeenMessageId &&
+          !hasNextMessageFromSameUser;
 
         return (
           <div key={`${message.id}-${message.timestamp}`}>
@@ -138,6 +187,11 @@ const Messages: FC<MessagesProps> = ({
                 </div>
               </div>
             </div>
+            {showSeenIndicator && (
+              <span className="text-xs text-gray-500 dark:text-gray-400 text-right block mr-8">
+                Seen
+              </span>
+            )}
           </div>
         );
       })}

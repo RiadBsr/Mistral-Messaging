@@ -51,6 +51,14 @@ export default async function Page({
   )) as string;
   const chatPartner = JSON.parse(chatPartnerRaw) as User;
   const initialMessages = await getChatMessages(chatId);
+
+  // Fetch the last seen message ID for the chat partner using fetchRedis
+  const lastSeenMessageId = (await fetchRedis(
+    "hget",
+    `chat:${chatId}:seen`,
+    chatPartnerId
+  )) as string | null;
+
   return (
     <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh)-6rem]">
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200 dark:border-gray-700">
@@ -87,6 +95,7 @@ export default async function Page({
         sessionImg={session.user.image}
         chatPartner={chatPartner}
         chatId={chatId}
+        initialLastSeenMessageId={lastSeenMessageId}
       />
       <ChatInput chatId={chatId} chatPartner={chatPartner} />
     </div>
