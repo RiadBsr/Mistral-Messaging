@@ -7,6 +7,13 @@ import { Check, UserPlus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
+interface IncomingFriendRequest {
+  senderId: string;
+  senderEmail: string;
+  senderName: string;
+  senderProfileImage: string;
+}
+
 interface FriendRequestsProps {
   incomingFriendRequests: IncomingFriendRequest[];
   sessionId: string;
@@ -28,8 +35,13 @@ const FriendRequests: FC<FriendRequestsProps> = ({
     const friendRequestHandler = ({
       senderId,
       senderEmail,
+      senderName,
+      senderProfileImage,
     }: IncomingFriendRequest) => {
-      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
+      setFriendRequests((prev) => [
+        ...prev,
+        { senderId, senderEmail, senderName, senderProfileImage },
+      ]);
     };
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
 
@@ -67,8 +79,12 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       ) : (
         friendRequests.map((request) => (
           <div key={request.senderId} className="flex gap-4 items-center">
-            <UserPlus className="text-black" />
-            <p className="font-medium text-lg">{request.senderEmail}</p>
+            <img
+              src={request.senderProfileImage}
+              alt={`${request.senderName}'s profile picture`}
+              className="w-10 h-10 rounded-full"
+            />
+            <p className="font-medium text-lg">{`${request.senderName} (${request.senderEmail})`}</p>
             <button
               onClick={() => acceptFriend(request.senderId)}
               aria-label="accept friend"

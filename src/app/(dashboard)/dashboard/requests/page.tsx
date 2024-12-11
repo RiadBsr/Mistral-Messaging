@@ -22,6 +22,8 @@ const page = async () => {
       return {
         senderId,
         senderEmail: senderParsed.email,
+        senderName: senderParsed.name,
+        senderProfileImage: senderParsed.image,
       };
     })
   );
