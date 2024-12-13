@@ -4,6 +4,7 @@ import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
 import axios from "axios";
 import { Check, X } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
@@ -79,9 +80,11 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       ) : (
         friendRequests.map((request) => (
           <div key={request.senderId} className="flex gap-4 items-center">
-            <img
+            <Image
               src={request.senderProfileImage}
               alt={`${request.senderName}'s profile picture`}
+              width={40}
+              height={40}
               className="w-10 h-10 rounded-full"
             />
             <p className="font-medium text-lg">{`${request.senderName} (${request.senderEmail})`}</p>

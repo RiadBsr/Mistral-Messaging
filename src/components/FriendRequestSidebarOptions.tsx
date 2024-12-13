@@ -5,6 +5,8 @@ import { toPusherKey } from "@/lib/utils";
 import { User } from "lucide-react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import FriendRequestAcceptedToast from "./FriendRequestAcceptedToast";
 
 interface FriendRequestSidebarOptionsProps {
   sessionId: string;
@@ -27,11 +29,25 @@ const FriendRequestSidebarOptions: FC<FriendRequestSidebarOptionsProps> = ({
     const friendRequestHandler = () => {
       setUnseenRequestCount((prev) => prev + 1);
     };
-    const addedFriendHandler = () => {
+    const addedFriendHandler = (accepter: {
+      accepterId: string;
+      accepterName: string;
+      accepterImage: string;
+    }) => {
       setUnseenRequestCount((prev) => prev - 1);
+
+      toast.custom((t) => (
+        <FriendRequestAcceptedToast
+          t={t}
+          sessionId={sessionId}
+          accepterId={accepter.accepterId}
+          accepterName={accepter.accepterName}
+          accepterImg={accepter.accepterImage}
+        />
+      ));
     };
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
-    pusherClient.bind("new_friend", addedFriendHandler);
+    pusherClient.bind("friend_request_accepted", addedFriendHandler);
 
     return () => {
       pusherClient.unsubscribe(
@@ -40,7 +56,7 @@ const FriendRequestSidebarOptions: FC<FriendRequestSidebarOptionsProps> = ({
       pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`));
 
       pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
-      pusherClient.unbind("new_friend", addedFriendHandler);
+      pusherClient.unbind("friend_request_accepted", addedFriendHandler);
     };
   }, [sessionId]);
 

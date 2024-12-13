@@ -63,6 +63,18 @@ export async function POST(req: Request) {
       db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAccept),
     ]);
 
+    // Notify the requester that their friend request has been accepted
+    await pusherServer.trigger(
+      toPusherKey(`user:${idToAccept}:friends`),
+      "friend_request_accepted",
+      {
+        accepterId: user.id,
+        accepterEmail: user.email,
+        accepterName: user.name,
+        accepterImage: user.image,
+      }
+    );
+
     return new Response("OK");
   } catch (error) {
     if (error instanceof z.ZodError) {
