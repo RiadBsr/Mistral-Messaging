@@ -34,11 +34,15 @@ const Messages: FC<MessagesProps> = ({
     const markAsSeen = async () => {
       if (messages.length > 0) {
         const lastMessage = messages[0];
-        if (lastMessage.senderId !== sessionId) {
+        if (
+          lastMessage.senderId !== sessionId &&
+          lastMessage.id !== lastSeenMessageId
+        ) {
           await axios.post("/api/message/seen", {
             chatId,
             messageId: lastMessage.id,
           });
+          setLastSeenMessageId(lastMessage.id);
         }
       }
     };
@@ -81,7 +85,7 @@ const Messages: FC<MessagesProps> = ({
       pusherClient.unbind("incoming_message", messageHandler);
       pusherClient.unbind("message_seen", seenHandler);
     };
-  }, [chatId, messages, sessionId, chatPartner.id]);
+  }, [chatId, messages, sessionId, chatPartner.id, lastSeenMessageId]);
 
   const scrollDownRef = useRef<HTMLDivElement>(null);
 
