@@ -1,5 +1,3 @@
-// ChatInput.tsx
-
 "use client";
 
 import axios from "axios";

@@ -78,7 +78,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
       ) : null}
       <ul
         role="list"
-        className="max-h-[25rem] overflow-y-auto -mx-2 space-y-1 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-w-2 scrolling-touch"
+        className="max-h-[25rem] overflow-y-auto -mx-2 space-y-1 scrollbar-thumb-blue scrollbar-thumb scrollbar-w-2 scrolling-touch"
       >
         {activeChats
           .sort((a, b) => a.name.localeCompare(b.name))

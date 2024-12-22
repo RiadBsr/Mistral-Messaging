@@ -100,11 +100,11 @@ const DashboardChatList: React.FC<DashboardChatListProps> = ({
   }, [pathname, sessionId, router]);
 
   return (
-    <div className="max-h-[calc(100vh-15rem)] overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-w-2 scrolling-touch">
+    <div className="max-h-[calc(100vh-15rem)] overflow-y-auto scrollbar-thumb-blue scrollbar-thumb scrollbar-w-2 scrolling-touch">
       {friendsWithLastMessage.map((friend) => (
         <div
           key={friend.id}
-          className={`relative p-2 m-2 rounded-full border ${
+          className={`relative p-2 m-2 border ${
             friend.hasUnseenMessages
               ? "border-orange-600"
               : "border-zinc-200 dark:border-zinc-700"
@@ -118,13 +118,13 @@ const DashboardChatList: React.FC<DashboardChatListProps> = ({
             className="relative flex items-center"
           >
             <div className="flex-shrink-0 mr-4">
-              <div className="relative h-16 w-16">
+              <div className="relative h-16 w-16 pixel-art">
                 <Image
                   referrerPolicy="no-referrer"
-                  className="rounded-full"
                   alt={`${friend.name} profile picture`}
                   src={friend.image}
                   fill
+                  objectFit="cover"
                 />
               </div>
             </div>
@@ -135,10 +135,10 @@ const DashboardChatList: React.FC<DashboardChatListProps> = ({
                   friend.hasUnseenMessages ? "font-bold" : "font-normal"
                 } flex items-center`}
               >
-                {friend.hasUnseenMessages && (
-                  <span className="w-3 h-3 bg-orange-500 rounded-full mr-2"></span>
-                )}
                 {friend.name}
+                {friend.hasUnseenMessages && (
+                  <span className="w-3 h-3 bg-orange-500 rounded-full ml-2"></span>
+                )}
               </h4>
               <p
                 className={`text-sm max-w-md line-clamp-1 ${
@@ -151,7 +151,7 @@ const DashboardChatList: React.FC<DashboardChatListProps> = ({
                 {friend.lastMessage?.text}
               </p>
 
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-zinc-400 line-clamp-1">
                 {friend.lastMessage
                   ? isToday(friend.lastMessage.timestamp)
                     ? `Today at ${format(
@@ -174,7 +174,11 @@ const DashboardChatList: React.FC<DashboardChatListProps> = ({
             </div>
 
             <div className="ml-4 flex-shrink-0">
-              <ChevronRight className="h-7 w-7 text-zinc-400" />
+              <ChevronRight
+                className={`h-7 w-7 ${
+                  friend.hasUnseenMessages ? "text-orange-500" : "text-zinc-400"
+                }`}
+              />
             </div>
           </Link>
         </div>

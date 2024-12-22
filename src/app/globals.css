@@ -46,3 +46,12 @@ body {
 .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
   border-radius: 0.25rem;
 }
+
+.pixel-art {
+  mask-image: url("/pixel-mask.svg");
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: url("/pixel-mask.svg");
+  -webkit-mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+}
