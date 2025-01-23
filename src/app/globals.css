@@ -48,10 +48,12 @@ body {
 }
 
 .pixel-art {
-  mask-image: url("/pixel-mask.svg");
+  mask-image: url("/pixel-mask.png");
   mask-size: cover;
   mask-repeat: no-repeat;
-  -webkit-mask-image: url("/pixel-mask.svg");
+  mask-mode: alpha;
+  -webkit-mask-image: url("/pixel-mask.png");
   -webkit-mask-size: cover;
   -webkit-mask-repeat: no-repeat;
+  -webkit-mask-mode: alpha;
 }

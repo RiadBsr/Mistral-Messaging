@@ -30,7 +30,7 @@ This is a real-time messaging application built with Next.js and powered by Mist
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/mistral-messaging-app.git
+   git clone https://github.com/RiadBsr/mistral-messaging-app.git
    ```
 2. Navigate to the project directory:
    ```bash
